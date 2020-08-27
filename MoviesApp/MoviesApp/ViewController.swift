@@ -8,7 +8,9 @@
 
 import UIKit
 
-class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource{
+class ViewController: UIViewController{
+   
+    
     struct movies {
     var id : Int = 0
        var title : String = ""
@@ -16,19 +18,34 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
        var language : String = ""
        var medium_cover_image : String = ""
        var description_full : String = ""
+        var genre : [String] = []
     }
     var movieArray :[Movie] = []
     var secondMovieArray :[Movie] = []
     var titles : [String] = []
+    var uniqueGenre : [String] = []
+    var arrayofUnique : [Int] = []
     
     var newArray : [movies] = []
     var forward = movies()
     
     let imageCache = NSCache<AnyObject, AnyObject>()
     
-    @IBOutlet weak var tableView: UITableView!
+
+    
+    
+    @IBOutlet weak var activity: UIActivityIndicatorView!
+    @IBOutlet weak var collectionView: UICollectionView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        collectionView.backgroundColor = .darkGray
+        
+        collectionView.isHidden = true
+        activity.isHidden = false
+        activity.startAnimating()
+        
         calling()
         // Do any additional setup after loading the view.
     }
@@ -40,7 +57,8 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         {
            let session = URLSession.shared
            session.dataTask(with: url) { (data, response, error) in
-               if let response = response {
+            if response != nil {
+                
 //                   print(response)
                }
                
@@ -50,7 +68,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
               do {
                     json = try JSONSerialization.jsonObject(with: data, options: [])
            
-                   // print(json!)
+                    //print(json!)
                    } catch {
                        print(error)
                    }
@@ -81,9 +99,23 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
            }.resume()
         }
         
+       
+        
+    }
+    func suffle(){
+        var array : [String] = []
+        for i in 0..<newArray.count{
+            print("genre = \(newArray[i].genre)")
+            array.append(contentsOf: newArray[i].genre)
+        }
+        print("outter")
+   
+        uniqueGenre = Array(Set(array))
+        print(uniqueGenre)
     }
     func array(_ json:[[String:Any]] ){
         
+
         var currentMovie = movies()
         var last = movies()
         for i in 0..<json.count{
@@ -105,9 +137,16 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
                 last.id = id
                 last.title = title
                 last.year = year
-                
+                if let genre = json[i]["genres"] as? NSArray{
+                    for i in 0..<genre.count{
+                        currentMovie.genre = genre as! [String]
+                         print("\(title)array of each genre \(genre[i]) for \(i)")
+                    }
+                   
+                }
                 
             }
+            
 //                movieArray.insert(currentMovie, at: i)
 //                secondMovieArray.append(currentMovie)
             newArray.append(currentMovie)
@@ -119,72 +158,87 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
                for i in 0..<newArray.count{
                 print("\(i)-\(newArray[i].id)")
                }
-      
+      suffle()
         reload()
         
     }
     func reload() {
+      
         DispatchQueue.main.async {
-            self.tableView.reloadData()
+            self.collectionView.reloadData()
+           // self.tableView.reloadData()
         }
         
      
     }
     
     
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        return newArray.count
-       }
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
-    }
-    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "MOVIES"
-    }
-       
-       func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "movieCell", for: indexPath)
-        let label = cell.viewWithTag(1001) as? UILabel
-        var img = cell.viewWithTag(1002) as? UIImageView
-        
-        label?.text = "\(newArray[indexPath.row].title)( \(newArray[indexPath.row].year))"
-//        print("\(movieArray.count) + \(indexPath.row) + \( movieArray[indexPath.row].title) ")
-        
-        img?.image = nil
-        if let imageFromCache = imageCache.object(forKey: newArray[indexPath.row].medium_cover_image as AnyObject) as? UIImageView{
-            img = imageFromCache
-            
-        }
-        
-        DispatchQueue.main.async {
-            if let url = URL(string: self.newArray[indexPath.row].medium_cover_image){
-                            do {
-                             
-                                let data = try Data(contentsOf: url)
-                             let imageToCache = UIImage(data: data)
-                             
-                                img?.image = imageToCache
-                            }catch {
-                                print("Error")
-                            }
-                 
-                 }
-        }
-        
-     
-        return cell
-       }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        forward = newArray[indexPath.row]
-        performSegue(withIdentifier: "info", sender: nil)
-    }
+//
+//    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+//
+//        return newArray.count
+//       }
+//    func numberOfSections(in tableView: UITableView) -> Int {
+//        return 1
+//    }
+//    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+//        return "MOVIES"
+//    }
+//
+//       func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "movieCell", for: indexPath)
+//        let label = cell.viewWithTag(1001) as? UILabel
+//        let img = cell.viewWithTag(1002) as? UIImageView
+//        img?.bounds.size = CGSize(width: 40, height: 40)
+//
+//
+//        cell.backgroundColor = .lightGray
+//        label?.text = "\(newArray[indexPath.row].title)( \(newArray[indexPath.row].year))"
+////        print("\(movieArray.count) + \(indexPath.row) + \( movieArray[indexPath.row].title) ")
+//
+//        let activity = cell.viewWithTag(1234) as? UIActivityIndicatorView
+//        activity?.isHidden = false
+//        activity?.startAnimating()
+//
+//
+//        img?.image = nil
+//
+//
+//
+////            if let url = URL(string: self.newArray[indexPath.row].medium_cover_image){
+////                            do {
+////
+////                                let data = try Data(contentsOf: url)
+////                                DispatchQueue.main.async {
+////                             img?.image  = UIImage(data: data)
+////
+////
+////                                activity?.isHidden = true
+////                                    activity?.stopAnimating()
+////
+////                                }
+////                            }catch {
+////                                print("Error")
+////                            }
+////
+////                 }
+//
+//
+//
+//        return cell
+//       }
+//
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return 50
+//    }
+//
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        forward = newArray[indexPath.row]
+//        performSegue(withIdentifier: "info", sender: nil)
+//    }
+//    func tableView(_ tableView: UITableView, prefetchRowsAt indexPaths: [IndexPath]) {
+//
+//       }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "info"{
@@ -195,9 +249,125 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
                 controller.language = forward.language
                 controller.medium_cover_image = forward.medium_cover_image
                 controller.year = forward.year
+                controller.genre = forward.genre
             }
         }
     }
   
 }
 
+extension ViewController: UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout{
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        self.collectionView.isHidden = false
+               self.activity.isHidden = true
+               self.activity.stopAnimating()
+        return uniqueGenre.count
+    }
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+        let section = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "sectionsName", for: indexPath) as UICollectionReusableView
+        let label = section.viewWithTag(4001) as! UILabel
+        label.text = uniqueGenre[indexPath.section]
+        label.textColor = .white
+        section.backgroundColor = .black
+        return section
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        var counting = 0
+        for i in 0..<newArray.count{
+            for j in 0..<newArray[i].genre.count{
+                if newArray[i].genre[j] == uniqueGenre[section]{
+                            counting += 1
+                }
+            }
+        }
+        return counting
+        
+       
+        
+    }
+    func gather(number:Int) -> [Int] {
+        
+        let currentGenre = uniqueGenre[number]
+        for i in 0..<newArray.count {
+            for j in 0..<newArray[i].genre.count{
+                if currentGenre == newArray[i].genre[j]{
+                    arrayofUnique.append(i)
+                }
+             }
+        }
+        
+
+        return arrayofUnique
+    }
+   
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        
+        let set = gather(number: indexPath.section)
+ 
+        var objIndex = set[indexPath.item]
+        var object = movies()
+        object = newArray[objIndex]
+        
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath)
+      
+        
+        let activity = cell.viewWithTag(3005) as? UIActivityIndicatorView
+        activity?.isHidden = false
+        activity?.startAnimating()
+        
+        let image = cell.viewWithTag(3001) as? UIImageView
+        image?.backgroundColor = UIColor.red
+        image?.layer.borderWidth = 5
+        image?.layer.cornerRadius = 10
+        
+        image?.load(object.medium_cover_image)
+
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize
+    {
+
+            
+            return CGSize(width: 126, height: 180);
+    }
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let selectedItem = indexPath.item
+        let selected = arrayofUnique[selectedItem]
+        forward = newArray[selected]
+        performSegue(withIdentifier: "info", sender: nil)
+    }
+    
+    
+}
+
+extension UIImageView{
+    func layout() {
+        self.backgroundColor = .lightGray
+        self.contentMode = .scaleAspectFill
+    }
+    
+    
+    func load(_ Url:String){
+        
+        image = nil
+        guard let url = URL(string: Url) else {
+            return
+        }
+        
+        DispatchQueue.global().async { [weak self] in
+            if let data = try? Data(contentsOf: url){
+                if let image = UIImage(data: data){
+                    DispatchQueue.main.async {
+              
+                        self?.image = image
+                        
+                    }
+                }
+            }
+        }
+    }
+}

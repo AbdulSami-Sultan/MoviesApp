@@ -15,6 +15,8 @@ class InformationViewController: UIViewController {
           var language : String = ""
           var medium_cover_image : String = ""
           var description_full : String = ""
+    var genre : [String] = []
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,23 +39,29 @@ class InformationViewController: UIViewController {
 
         let imagess = view.viewWithTag(2006) as? UIImageView
         
+        var genres = ""
+        for i in 0..<genre.count{
+            genres.append(genre[i])
+        }
         
         label1?.text = String(id)
         label2?.text = String(titleName)
         label3?.text = String(year)
         label4?.text = String(language)
-        label5?.text = String(description_full)
+        label5?.text = String(description_full) + "\nGenre : " + String(genres)
+        imagess?.load(medium_cover_image)
         
-        if let url = URL(string: medium_cover_image){
-            do {
-             
-                let data = try Data(contentsOf: url)
-                imagess?.image = UIImage(data: data)
-            }catch {
-                print("Error")
-            }
-            
-        }
+        
+//        if let url = URL(string: medium_cover_image){
+//            do {
+//
+//                let data = try Data(contentsOf: url)
+//                imagess?.image = UIImage(data: data)
+//            }catch {
+//                print("Error")
+//            }
+//
+//        }
         
         
         
