@@ -13,10 +13,7 @@
 		FA21F7D624F18B41007DC033 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA21F7D424F18B41007DC033 /* Main.storyboard */; };
 		FA21F7D824F18B43007DC033 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA21F7D724F18B43007DC033 /* Assets.xcassets */; };
 		FA21F7DB24F18B43007DC033 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA21F7D924F18B43007DC033 /* LaunchScreen.storyboard */; };
-		FA21F7E324F19248007DC033 /* Movie_info.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA21F7E224F19248007DC033 /* Movie_info.swift */; };
-		FA21F7E524F1CD83007DC033 /* InformationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA21F7E424F1CD83007DC033 /* InformationViewController.swift */; };
-		FA630A6E24F69C26006FAF62 /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA630A6D24F69C26006FAF62 /* CustomImageView.swift */; };
-		FA630A7024F6CCCC006FAF62 /* customCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA630A6F24F6CCCC006FAF62 /* customCell.swift */; };
+		FA29A1FD24F85699002BE311 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA29A1FC24F85699002BE311 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,10 +25,7 @@
 		FA21F7D724F18B43007DC033 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FA21F7DA24F18B43007DC033 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FA21F7DC24F18B43007DC033 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		FA21F7E224F19248007DC033 /* Movie_info.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie_info.swift; sourceTree = "<group>"; };
-		FA21F7E424F1CD83007DC033 /* InformationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationViewController.swift; sourceTree = "<group>"; };
-		FA630A6D24F69C26006FAF62 /* CustomImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
-		FA630A6F24F6CCCC006FAF62 /* customCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = customCell.swift; sourceTree = "<group>"; };
+		FA29A1FC24F85699002BE311 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,14 +61,11 @@
 				FA21F7CE24F18B41007DC033 /* AppDelegate.swift */,
 				FA21F7D024F18B41007DC033 /* SceneDelegate.swift */,
 				FA21F7D224F18B41007DC033 /* ViewController.swift */,
-				FA21F7E424F1CD83007DC033 /* InformationViewController.swift */,
-				FA21F7E224F19248007DC033 /* Movie_info.swift */,
-				FA630A6D24F69C26006FAF62 /* CustomImageView.swift */,
+				FA29A1FC24F85699002BE311 /* Extensions.swift */,
 				FA21F7D424F18B41007DC033 /* Main.storyboard */,
 				FA21F7D724F18B43007DC033 /* Assets.xcassets */,
 				FA21F7D924F18B43007DC033 /* LaunchScreen.storyboard */,
 				FA21F7DC24F18B43007DC033 /* Info.plist */,
-				FA630A6F24F6CCCC006FAF62 /* customCell.swift */,
 			);
 			path = MoviesApp;
 			sourceTree = "<group>";
@@ -151,12 +142,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA21F7D324F18B41007DC033 /* ViewController.swift in Sources */,
-				FA630A6E24F69C26006FAF62 /* CustomImageView.swift in Sources */,
-				FA630A7024F6CCCC006FAF62 /* customCell.swift in Sources */,
+				FA29A1FD24F85699002BE311 /* Extensions.swift in Sources */,
 				FA21F7CF24F18B41007DC033 /* AppDelegate.swift in Sources */,
-				FA21F7E324F19248007DC033 /* Movie_info.swift in Sources */,
 				FA21F7D124F18B41007DC033 /* SceneDelegate.swift in Sources */,
-				FA21F7E524F1CD83007DC033 /* InformationViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
